@@ -58,3 +58,9 @@ int ft_printf(const char *string, ...)
     va_end(args);
     return (len);
 }
+
+int main()
+{
+    int test = 9;
+    ft_printf("test = %d", test);
+}
