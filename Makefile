@@ -6,39 +6,42 @@
 #    By: kmarczyn <kmarczyn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 16:40:33 by kmarczyn          #+#    #+#              #
-#    Updated: 2024/05/15 18:50:20 by kmarczyn         ###   ########.fr        #
+#    Updated: 2024/06/20 15:40:54 by kmarczyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a 
-#nazwa naszej biblioteki
+NAME= libftprintf.a
+LIBFT= libft.a
+OBJ= $(SRC:%.c=%.o)
 
-SRCS	= ./Src/ft_printf.c \
-	   	./Src/ft_numbers.c \
-		./Src/ft_words.c \
-#nazwa oraz pliki źródło
+CC= cc
+CFLAGS= -Wall -Wextra -Werror
+LIBTFSRC= ./libft
 
-OBJS = $(SRC:.c=.o)
-#nazwa oraz przypisanie każdego pliku ze źródła z rozszerzenia .c na .o
-CC = gcc
-CCFLAGS = -Wall -Wextra -Werror
-RM = rm -f
-#przypisanie zmiennych
+SRC= ft_printf.c print_char.c print_string.c print_hex.c print_number.c \
+print_unsigned.c print_pointer.c
+
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 all: $(NAME)
-#komenda wykonawcza do wszystkich plików tworząc biblioteke
 
-$(NAME):	$(OBJS)
-	ar rcs $(NAME) $(OBJS)
-#komenda zbierająca już zamienione pliki i tworząca z nich biblioteke
-#ar - narzędzoe tworzące, rcs - replace create index, jest to opckaj naszego narzędzia
+$(NAME): libft $(OBJ)
+	ar rcs $(NAME) $(OBJ)
 
-#komendy do make jak usunięcie itd
+libft:
+	@make -C $(LIBTFSRC)
+	@cp $(LIBTFSRC)/$(LIBFT) .
+	@mv $(LIBFT) $(NAME)
+
 clean:
-	$(RM) $(OBJS)
-fclean:
-	$(RM) $(NAME)
-re:
-	fclean all
-.PHONY:
-	all clean fclean re
+	rm -f *.o
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all libft clean fclean re
+
