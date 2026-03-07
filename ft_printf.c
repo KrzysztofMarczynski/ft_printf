@@ -50,7 +50,7 @@ int	ft_printf(const char *input, ...)
 		{
 			input++;
 			if (ft_strchr("cspdiuxX", *input))
-				res += ft_print_sign(*input, arguments);// ft_printf("dupa %d", test);
+				res += ft_print_sign(*input, arguments);
 			else if (*input == '%')
 				res += write(1, "%", 1);
 		}
